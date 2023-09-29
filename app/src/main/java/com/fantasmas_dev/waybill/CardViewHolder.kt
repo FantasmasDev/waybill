@@ -17,24 +17,3 @@ class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         carImageView.setImageResource(model.carImage)
     }
 }
-
-//class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-//    private val userNumberView: TextView
-//    private val commentTextView: TextView
-//    private val userImageView: ImageView
-//
-//    init {
-//        userNumberView = itemView.findViewById(R.id.userNumber)
-//        commentTextView = itemView.findViewById(R.id.commentText)
-//        userImageView = itemView.findViewById(R.id.userImage)
-//    }
-
-//    fun bind(model: Comment) {
-//        userNumberView.text = "#${model.userNumber}"
-//        commentTextView.text = model.commentText
-//        userImageView.setImageResource(model.userImage)
-//        // Генерируем новый уникальный ID
-//
-//
-//    }
-//}

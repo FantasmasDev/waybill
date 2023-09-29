@@ -2,7 +2,6 @@ package com.fantasmas_dev.waybill;
 
 import android.text.InputFilter;
 import android.text.Spanned;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
