@@ -1,9 +1,12 @@
 package com.fantasmas_dev.waybill
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputFilter
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fantasmas_dev.waybill.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,23 +40,55 @@ class MainActivity : AppCompatActivity() {
             issuedFuel.isEnabled = isChecked
         }
 
+        binding.fuelOfCar.filters = arrayOf<InputFilter>(NumberInputFilter(5, 2))
+
         button.setOnClickListener {
             calculate(carFuelConsumption)
         }
     }
 
     private fun calculate(carFuelConsumption: Double) {
-        val mileageBefore = binding.carMileageBefore.text.toString().toIntOrNull() ?: return
-        val mileageAfter = binding.carMileageAfter.text.toString().toIntOrNull() ?: return
-        val carFuel = binding.fuelOfCar.text.toString().toDoubleOrNull() ?: return
-        var issuedFuel = 0.0
+        val mileageBefore: Int? = binding.carMileageBefore.text.toString().toIntOrNull()
+        val mileageAfter: Int? = binding.carMileageAfter.text.toString().toIntOrNull()
+        val carFuel: Double? = binding.fuelOfCar.text.toString().toDoubleOrNull()
+        var issuedFuel: Double? = null
 
-        if(binding.refill.isChecked){
-            issuedFuel = binding.fuelIssued.text.toString().toDoubleOrNull() ?: return
+        if (isNotChecked) {
+            Toast.makeText(this, "Выберете автомобиль", Toast.LENGTH_LONG).show()
+            return
         }
 
-        if (mileageAfter < mileageBefore || isNotChecked) {
+        if (mileageBefore == null) {
+            Toast.makeText(this, "Запаолните пробег перед выездом", Toast.LENGTH_LONG).show()
             return
+        }
+
+        if (mileageAfter == null) {
+            Toast.makeText(this, "Запаолните пробег после выезда", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        if (mileageAfter < mileageBefore) {
+            Toast.makeText(this, "пробег после не может быть меньше чем до", Toast.LENGTH_LONG)
+                .show()
+            return
+        }
+
+        if (carFuel == null) {
+            Toast.makeText(this, "Запаолните топливо на начало выезда", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        if (binding.refill.isChecked) {
+            issuedFuel = binding.fuelIssued.text.toString().toDoubleOrNull()
+            if (issuedFuel == null) {
+                Toast.makeText(
+                    this,
+                    "Запаолните поле, сколько было заправлено топлива в прошлый выезд",
+                    Toast.LENGTH_LONG
+                ).show()
+                return
+            }
         }
 
         val totalMileage = mileageAfter - mileageBefore
@@ -62,9 +97,9 @@ class MainActivity : AppCompatActivity() {
         val usedFuel = totalMileage * carFuelConsumption / 100
         binding.fuelUsed.text = usedFuel.toString()
 
-        val totalReminder = if(binding.refill.isChecked){
-            carFuel - usedFuel + issuedFuel
-        }else{
+        val totalReminder = if (binding.refill.isChecked) {
+            carFuel - usedFuel + issuedFuel!!
+        } else {
             carFuel - usedFuel
         }
         binding.remainder.text = totalReminder.toString()
