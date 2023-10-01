@@ -15,7 +15,7 @@
     <string name="calculate_button">Расчитать</string>
 
     <string name="error_select_car">Выберете автомобиль</string>
-    <string name="error_mileage_befor">Заполните пробег перед выездом</string>
+    <string name="error_mileage_before">Заполните пробег перед выездом</string>
     <string name="error_mileage_after">Заполните пробег после выезда</string>
     <string name="error_mileage">Пробег после не может быть меньше чем до</string>
     <string name="error_fuel_issued">Заполните топливо на начало выезда</string>

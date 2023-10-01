@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fantasmas_dev.waybill.databinding.ActivityMainBinding
-import com.google.android.material.carousel.CarouselLayoutManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,10 +24,15 @@ class MainActivity : AppCompatActivity() {
         val issuedFuel = binding.fuelIssued
         val isRefill = binding.refill
 
-        recycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        recycler.adapter = CardAdapter(
-            cards = listOf(Car.Largus, Car.Vesta, Car.Multiwan), selectedCar, this
-        )
+        recycler.apply {
+            layoutManager =
+                LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = CardAdapter(
+                listOf(Car.Largus, Car.Vesta, Car.Multiwan),
+                selectedCar,
+                this@MainActivity
+            )
+        }
 
         isRefill.setOnCheckedChangeListener { _, isChecked ->
             issuedFuel.isEnabled = isChecked
@@ -37,15 +41,19 @@ class MainActivity : AppCompatActivity() {
         fuel.filters = arrayOf<InputFilter>(NumberInputFilter(5, 2))
 
         button.setOnClickListener {
-            calculate(carFuelConsumption)
+            calculate()
         }
     }
 
-    private fun calculate(carFuelConsumption: Double) {
+    private fun calculate() {
         val mileageBefore: Int? = binding.carMileageBefore.text.toString().toIntOrNull()
         val mileageAfter: Int? = binding.carMileageAfter.text.toString().toIntOrNull()
         val carFuel: Double? = binding.fuelOfCar.text.toString().toDoubleOrNull()
-        var issuedFuel: Double? = null
+        val issuedFuel = if (binding.refill.isChecked) {
+            binding.fuelIssued.text.toString().toDoubleOrNull()
+        } else {
+            null
+        }
 
         if (isNotChecked) {
             Toast.makeText(this, getString(R.string.error_select_car), Toast.LENGTH_LONG).show()
@@ -53,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (mileageBefore == null) {
-            Toast.makeText(this, getString(R.string.error_mileage_befor), Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.error_mileage_before), Toast.LENGTH_LONG).show()
             return
         }
 
@@ -73,16 +81,13 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        if (binding.refill.isChecked) {
-            issuedFuel = binding.fuelIssued.text.toString().toDoubleOrNull()
-            if (issuedFuel == null) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.error_fuel_refill),
-                    Toast.LENGTH_LONG
-                ).show()
-                return
-            }
+        if (binding.refill.isChecked && issuedFuel == null) {
+            Toast.makeText(
+                this,
+                getString(R.string.error_fuel_refill),
+                Toast.LENGTH_LONG
+            ).show()
+            return
         }
 
         val totalMileage = mileageAfter - mileageBefore
