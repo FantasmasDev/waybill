@@ -91,11 +91,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="4dp"
-
                         android:gravity="start"
                         android:hint="@string/car_mileage_before"
-                        android:inputType="numberDecimal"
-                        android:maxLength="3"
+                        android:inputType="number"
+                        android:maxLength="6"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,8 +111,8 @@
                         android:layout_marginHorizontal="4dp"
                         android:gravity="start"
                         android:hint="@string/car_mileage_after"
-                        android:inputType="numberDecimal"
-                        android:maxLength="3"
+                        android:inputType="number"
+                        android:maxLength="6"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -156,7 +155,8 @@
                         android:layout_marginHorizontal="4dp"
                         android:gravity="start"
                         android:hint="@string/fuel_issued"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
+                        android:enabled="false"
                         android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -226,5 +226,4 @@
         android:text="@string/calculate_button"
         app:icon="@drawable/done"
         tools:ignore="RtlHardcoded" />
-
 </LinearLayout>

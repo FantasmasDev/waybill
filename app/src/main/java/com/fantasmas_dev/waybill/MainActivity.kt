@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
             issuedFuel.isEnabled = isChecked
         }
 
-        fuel.filters = arrayOf<InputFilter>(NumberInputFilter(5, 2))
+        issuedFuel.filters = arrayOf<InputFilter>(NumberInputFilter(3, 2))
 
         button.setOnClickListener {
             calculate()
